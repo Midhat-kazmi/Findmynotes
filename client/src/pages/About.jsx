@@ -44,7 +44,7 @@ const About = () => {
             At FindMyNotes, our mission is clear: to empower students by
             providing a centralized platform where knowledge knows no
             boundaries. We aim to break down the barriers to academic success,
-            making valuable study materials accessible to all.
+            making valuable study materials accessible to all. Free Palestine!!
           </p>
         </div>
       </div>
