@@ -1,0 +1,37 @@
+const express = require("express"); // Corrected 'Require' to 'require'
+const router = express.Router();
+const authController = require("../Controllers/AuthController");
+const multer = require("multer");
+const dotenv = require("dotenv");
+const cloudinary = require("cloudinary");
+
+dotenv.config();
+
+cloudinary.config({
+    cloud_name: process.env.ClOUDINARY_NAME,
+    api_key: process.env.ClOUDINARY_API_KEY,
+    api_secret: process.env.ClOUDINARY_API_SECRET
+});
+
+const storage = multer.diskStorage({
+    destination: function(req, file, cb){
+        const destinationPath = "./images"; // Make sure this path exists
+        cb(null, destinationPath);
+    },
+    filename: function(req, file, cb){
+        const uniqueSuffix = Date.now();
+        cb(null, uniqueSuffix + file.originalname);
+    },
+});
+
+var upload = multer({
+    storage: storage
+});
+
+// Signup
+router.post("/signup", upload.single("profileImage"), authController.signup);
+
+// Login
+router.post("/login", authController.login);
+
+module.exports = router;
