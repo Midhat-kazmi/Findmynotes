@@ -14,8 +14,9 @@ const Signup = () => {
   const [userPassword, setUserPassword] = useState("");
 
   const registerUser = async (e) => {
-    e.preventDefault();
     try {
+      e.preventDefault();
+
       const formData = new FormData();
       formData.append("firstName", firstName);
       formData.append("lastName", lastName);
@@ -33,168 +34,175 @@ const Signup = () => {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        }
+        },
       );
-
       console.log("Data: ", result);
-      alert("User registered successfully!");
+      alert("User Entry Saved in Database"); // future: state management > OR  redirect
+
+      //error logic
     } catch (error) {
-      console.error("Failed to register user: ", error);
-      alert("Failed to register user. Please try again.");
+      console.log("Failed to Register User: ", error);
     }
   };
 
   return (
-    <div className="flex w-full items-center justify-center bg-gray-100">
+    <div className="flex w-full items-center justify-center bg-[#f3f4f6]">
       <form
-        className="w-full max-w-lg flex flex-col gap-4 bg-white p-6 shadow-lg rounded-lg"
+        className="flex h-full w-full max-w-[420px] flex-col gap-3 bg-white p-5"
         onSubmit={registerUser}
       >
-        <h1 className="text-2xl font-bold text-gray-800">Register</h1>
-
-        {/* First and Last Name */}
-        <div className="flex gap-4">
-          <div className="flex flex-col w-1/2">
-            <label className="font-semibold text-gray-700" htmlFor="firstName">
+        <h1 className="text-2xl font-black">Register</h1>
+        <div className="flex items-start justify-center gap-4">
+          <div className="flex flex-col items-start justify-center">
+            <label className="font-bold" htmlFor="firstName">
               First Name
             </label>
             <input
               type="text"
               id="firstName"
+              name="firstName"
+              className="w-full rounded-lg border p-2 focus:border-blue-500 focus:outline-none"
               placeholder="John"
-              className="rounded-lg border-gray-300 p-2 focus:ring-blue-500 focus:border-blue-500"
               onChange={(e) => setFirstName(e.target.value)}
             />
           </div>
-          <div className="flex flex-col w-1/2">
-            <label className="font-semibold text-gray-700" htmlFor="lastName">
+          <div className="flex flex-col items-start justify-center">
+            <label className="font-bold" htmlFor="lastName">
               Last Name
             </label>
             <input
               type="text"
               id="lastName"
+              name="lastName"
+              className="w-full rounded-lg border p-2 focus:border-blue-500 focus:outline-none"
               placeholder="Doe"
-              className="rounded-lg border-gray-300 p-2 focus:ring-blue-500 focus:border-blue-500"
               onChange={(e) => setLastName(e.target.value)}
             />
           </div>
         </div>
-
-        {/* Bio */}
-        <div className="flex flex-col">
-          <label className="font-semibold text-gray-700" htmlFor="userBio">
+        <div className="flex flex-col items-start justify-center">
+          <label className="font-bold" htmlFor="userBio">
             Bio
           </label>
           <textarea
             id="userBio"
+            name="userBio"
             rows="3"
+            className="mt-1 w-full rounded-md border p-2 focus:border-blue-500 focus:outline-none"
             placeholder="Tell us something about yourself"
-            className="rounded-lg border-gray-300 p-2 focus:ring-blue-500 focus:border-blue-500"
+            required
             onChange={(e) => setUserBio(e.target.value)}
-          />
+          ></textarea>
         </div>
-
-        {/* Email */}
-        <div className="flex flex-col">
-          <label className="font-semibold text-gray-700" htmlFor="userEmail">
+        <div className="flex flex-col items-start justify-center">
+          <label className="font-bold" htmlFor="userEmail">
             Email
           </label>
           <input
             type="email"
             id="userEmail"
+            name="userEmail"
+            className="w-full rounded-lg border p-2 focus:border-blue-500 focus:outline-none"
             placeholder="your.email@example.com"
-            className="rounded-lg border-gray-300 p-2 focus:ring-blue-500 focus:border-blue-500"
             onChange={(e) => setUserEmail(e.target.value)}
           />
         </div>
-
-        {/* Mobile Number */}
-        <div className="flex flex-col">
-          <label className="font-semibold text-gray-700" htmlFor="userMobile">
+        <div className="flex flex-col items-start justify-center">
+          <label className="font-bold" htmlFor="userMobile">
             Mobile Number
           </label>
           <input
-            type="tel"
+            type="number"
             id="userMobile"
+            name="userMobile"
+            className="w-full rounded-lg border p-2 focus:border-blue-500 focus:outline-none"
             placeholder="0000000000"
-            className="rounded-lg border-gray-300 p-2 focus:ring-blue-500 focus:border-blue-500"
             onChange={(e) => setUserMobile(e.target.value)}
           />
         </div>
-
-        {/* Username */}
-        <div className="flex flex-col">
-          <label className="font-semibold text-gray-700" htmlFor="userName">
-            Username
+        <div className="flex flex-col items-start justify-center">
+          <label className="font-bold" htmlFor="userName">
+            UserName
           </label>
           <input
             type="text"
             id="userName"
+            name="userName"
+            className="w-full rounded-lg border p-2 focus:border-blue-500 focus:outline-none"
             placeholder="johndoe123"
-            className="rounded-lg border-gray-300 p-2 focus:ring-blue-500 focus:border-blue-500"
             onChange={(e) => setUserName(e.target.value)}
           />
         </div>
-
-        {/* Password */}
-        <div className="flex flex-col">
-          <label className="font-semibold text-gray-700" htmlFor="userPassword">
+        <div className="flex flex-col items-start justify-center">
+          <label className="font-bold" htmlFor="userPassword">
             Password
           </label>
           <input
             type="password"
             id="userPassword"
+            name="userPassword"
+            className="w-full rounded-lg border p-2 focus:border-blue-500 focus:outline-none"
             placeholder="*********"
-            className="rounded-lg border-gray-300 p-2 focus:ring-blue-500 focus:border-blue-500"
             onChange={(e) => setUserPassword(e.target.value)}
           />
         </div>
-
-        {/* Profile Picture */}
-        <div className="flex flex-col items-center">
-          <div className="mb-4 h-24 w-24 overflow-hidden rounded-full border-2 border-dashed border-gray-300 bg-gray-50">
-            {profilePreviewImage ? (
-              <img
-                src={profilePreviewImage}
-                alt="Profile Preview"
-                className="h-full w-full object-cover"
-              />
+        <div className="flex w-full flex-col items-center justify-center">
+          <div className="mb-4 grid h-[200px] w-[200px] place-content-center overflow-hidden rounded-full border-2 border-dashed border-gray-300 bg-gray-50 text-2xl font-black">
+            {/* 200 x 200 */}
+            {profilePreviewImage == "" ? (
+              <p className="text-sm font-bold text-gray-500">Profile Image</p>
             ) : (
-              <span className="text-sm text-gray-500">Profile Image</span>
+              <img src={profilePreviewImage} alt="" className="" />
             )}
           </div>
           <label
-            htmlFor="profileImage"
-            className="cursor-pointer text-blue-500 underline"
+            htmlFor="dropzone-file"
+            className="flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100"
           >
-            Upload Profile Picture
-            <input
-              type="file"
-              id="profileImage"
-              className="hidden"
-              accept="image/*"
-              onChange={(e) => {
-                setProfilePreviewImage(
-                  URL.createObjectURL(e.target.files[0])
-                );
-                setProfileImage(e.target.files[0]);
-              }}
-            />
+            <div className="flex flex-col items-center justify-center pb-6 pt-5">
+              <svg
+                className="mb-4 h-8 w-8 text-gray-500"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 16"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2 "
+                />
+              </svg>
+              <p className="mb-2 text-sm text-gray-500">
+                <span className="font-semibold">
+                  Click to Upload your profile image
+                </span>
+              </p>
+              <input
+                type="file"
+                placeholder="File"
+                accept="application/png"
+                required
+                id="dropzone-file"
+                onChange={(e) => {
+                  setProfilePreviewImage(
+                    URL.createObjectURL(e.target.files[0]),
+                  );
+                  setProfileImage(e.target.files[0]);
+                }}
+                className="hidden"
+              />
+            </div>
           </label>
         </div>
-
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full rounded-lg bg-blue-500 px-5 py-2 font-bold text-white hover:bg-blue-600"
-        >
+        <button className="rounded-lg bg-blue-500 px-5 py-2 font-bold text-white hover:bg-blue-600">
           Register
         </button>
-
-        {/* Login Link */}
-        <div className="text-sm text-center">
+        <div className="text-sm">
           Already have an account?{" "}
-          <Link to="/login" className="text-blue-500 hover:underline">
+          <Link to="/login" className="font-bold text-blue-500 hover:underline">
             Login
           </Link>
         </div>

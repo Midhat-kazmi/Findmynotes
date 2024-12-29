@@ -1,94 +1,77 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import axios from "axios";
+import React, { useState } from "react";
+import { setUserData } from "../Redux/Slices/user-slices";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState({ username: '', password: '' });
 
-  const validateForm = () => {
-    let valid = true;
-    const newErrors = { username: '', password: '' };
-    if (!username.trim()) {
-      newErrors.username = 'Username is required';
-      valid = false;
-    }
-    if (!password.trim()) {
-      newErrors.password = 'Password is required';
-      valid = false;
-    }
-    setErrors(newErrors);
-    return valid;
-  };
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const loginUser = (e) => {
-    e.preventDefault();
-    if (validateForm()) {
-      // Handle login logic here
-      console.log('Logging in user', { username, password });
+  const [userEmail, setUserEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+
+  const loginUser = async (e) => {
+    try {
+      e.preventDefault();
+
+      const user = {
+        userEmail,
+        userPassword,
+      };
+
+      const result = await axios.post("http://localhost:6969/auth/login", user);
+      if(result.data.status==="Error")
+      {
+        toast.error("wrong credentials ");
+        navigate("/login");
+      }
+      else{
+      console.log("User Logged in Successfully: ", result);
+      dispatch(setUserData(result.data));
+      navigate("/");
+      }
+
+
+
+    } catch (error) {
+      console.log("Cannot Login the User: ", error);
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <form
-        className="w-full max-w-md rounded-lg bg-white p-8 shadow-lg"
-        onSubmit={loginUser}
-      >
-        <div className="mb-6">
-          <label className="mb-2 block text-sm font-medium text-gray-700" htmlFor="username">
-            Username
-          </label>
-          <input
-            id="username"
-            type="text"
-            placeholder="Enter your username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className={`block w-full rounded-lg border p-2.5 text-sm ${
-              errors.username
-                ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
-                : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
-            }`}
-          />
-          {errors.username && (
-            <p className="mt-1 text-xs text-red-500">{errors.username}</p>
-          )}
-        </div>
-        <div className="mb-6">
-          <label className="mb-2 block text-sm font-medium text-gray-700" htmlFor="password">
-            Password
-          </label>
-          <div className="relative">
+    <div className="h-heightWithoutNavbar flex w-full items-center justify-center p-5">
+      <form className="flex w-full max-w-[420px] flex-col gap-4 rounded-xl bg-white p-5 shadow-xl" onSubmit={loginUser}>
+        <h1 className="text-2xl font-bold">Login</h1>
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col items-start justify-center">
+            <label className="font-bold" htmlFor="userEmail">Email</label>
             <input
-              id="password"
-              type={showPassword ? 'text' : 'password'}
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className={`block w-full rounded-lg border p-2.5 text-sm ${
-                errors.password
-                  ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
-                  : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
-              }`}
+              type="email"
+              id="userEmail"
+              name="userEmail"
+              className="w-full rounded-lg border border-gray-400 p-2 focus:ring focus:ring-blue-500"
+              placeholder="your.email@example.com"
+              onChange={(e) => setUserEmail(e.target.value)}
             />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-2 text-gray-500 hover:text-gray-700"
-            >
-              {showPassword ? 'Hide' : 'Show'}
-            </button>
           </div>
-          {errors.password && (
-            <p className="mt-1 text-xs text-red-500">{errors.password}</p>
-          )}
+          <div className="flex flex-col items-start justify-center">
+            <label className="font-bold" htmlFor="userPassword">Password</label>
+            <input
+              type="password"
+              id="userPassword"
+              name="userPassword"
+              className="w-full rounded-lg border border-gray-400 p-2 focus:ring focus:ring-blue-500"
+              placeholder="*********"
+              onChange={(e) => setUserPassword(e.target.value)}
+            />
+          </div>
         </div>
-        <button
-          className="w-full rounded-lg bg-blue-500 py-2.5 text-white font-bold hover:bg-blue-600"
-          type="submit"
-        >
-          Login
+        <button className="rounded-lg bg-blue-500 px-5 py-2 font-bold text-white hover:bg-blue-600" type="submit">
+          Log In
         </button>
         <div className="flex items-center justify-between text-sm">
           <p className="">New to FindMyNotes?</p>

@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
+import { useSelector } from "react-redux";
 import axios from "axios";
 
 const Profile = () => {
-  // Mock user data
-  const user = {
-    _id: "12345",
-    firstName: "John",
-    lastName: "Doe",
-    userName: "johndoe",
-    userBio: "Bio of John Doe",
-    profileImage: "/path/to/profile/image.jpg",
-  };
+
+  const user = useSelector((state) => state.user.userData);
 
   const [userFiles, setUserFiles] = useState([]);
 
@@ -35,32 +29,36 @@ const Profile = () => {
       <div className="flex w-full flex-col items-center justify-center border-[3px] border-green-500 py-4 lg:h-full lg:w-[40%]">
         <div className="grid h-[200px] w-[200px] place-content-center overflow-hidden rounded-full bg-gray-400 text-2xl font-black">
           {/* 200 x 200 */}
-          <img src={user.profileImage} alt="user profile" className="" />
+          <img src={user.profileImage} alt="userprofile" className="" />
         </div>
         <div className="">
-          <div className="my-2 flex flex-col items-center justify-center">
+          <div className=" my-2 flex flex-col items-center justify-center ">
             <h2 className="text-2xl font-black">
               <span>{user.firstName}</span> <span>{user.lastName}</span>
             </h2>
             <p className="mt-1 text-center">{user.userName}</p>
-            <p className="mt-1 text-center">{user.userBio}</p>
+            <p className="mt-1 text-center">
+              {user.userBio}
+            </p>
           </div>
         </div>
         {/* counts */}
         <div className="flex items-center justify-center gap-4">
           <div className="grid h-[80px] w-[100px] place-content-center">
-            <p className="text-center text-[12px] font-bold">No. of Uploads:</p>
+            <p className="text-center text-[12px] font-bold">
+              No. of Uploads :
+            </p>
             <p className="text-center text-5xl font-black">{numberofUploads}</p>
           </div>
           <span className="h-[60px] w-[1px] bg-gray-400" />
           <div className="grid h-[80px] w-[100px] place-content-center">
-            <p className="text-center text-[12px] font-bold">No. of Files:</p>
+            <p className="text-center text-[12px] font-bold">No. of Files :</p>
             <p className="text-center text-5xl font-black">{numberofFiles}</p>
           </div>
         </div>
       </div>
       <div className="h-auto w-full border-[3px] border-amber-500 p-5 lg:h-full lg:w-[60%]">
-        <h1 className="mb-3 text-xl font-black">My Documents:</h1>
+        <h1 className="mb-3 text-xl font-black">My Documents :</h1>
         <div className="grid grid-cols-1 gap-5 p-4 sm:grid-cols-2 md:grid-cols-3">
           {userFiles.map((file) => (
             <a
@@ -68,15 +66,13 @@ const Profile = () => {
               key={file._id}
               className="mb-3 flex h-[35px] max-w-[250px] items-center justify-between gap-10 rounded-xl border border-black px-4"
               target="_blank"
-              rel="noopener noreferrer"
             >
-              <p className="font-semibold">{file.fileName}</p>
-              <FaExternalLinkAlt />
+              <p className="font-semibold"> {file.fileName}</p>
             </a>
           ))}
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
