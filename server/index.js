@@ -1,41 +1,37 @@
-const express = require('express'); 
+const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const multer = require("multer");
-const connectDB = require('./database'); // Import the connection function
-const User = require('./models/User');
+const cors = require("cors");
+const express = require("express");
+const bodyParser = require("body-parser");
+
 const authRoutes = require("./Routes/auth");
 const noteRoutes = require("./Routes/notes");
 
 const app = express();
+const PORT = 6969;
 
-// Middleware to parse JSON requests
-app.use(express.json()); 
+dotenv.config();
+app.use(cors());
+app.use(bodyParser.json());
+app.use(express.json());
 
-// Connect to MongoDB
-connectDB();
 
-app.get('/', (req, res) => {
-  res.send('Hello, world!');
+try {
+    mongoose.connect(process.env.MONGO_URL);
+    console.log("Connection Successfull");
+} catch (error) {
+    console.log(error);
+}
+
+app.get("/", (req, res) => {
+    res.send("Server Is Running");
 });
 
-app.post('/register', async (req, res) => {
-    const { name, email, password } = req.body;
-    
-    try {
-      // Create a new user instance
-      const newUser = new User({ name, email, password });
-      await newUser.save(); // Save the user to the database
-      res.send('User registered successfully');
-    } catch (err) {
-      res.status(500).send('Error registering user');
-    }
-  });
 
 app.use("/auth", authRoutes);
 app.use("/notes", noteRoutes);
+app.use("/files", express.static("files"));
 
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
- 
+    console.log(`Server Running on Port ${PORT}`);
+})

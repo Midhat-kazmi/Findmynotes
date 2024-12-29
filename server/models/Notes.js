@@ -1,27 +1,28 @@
 const mongoose = require("mongoose");
 
-const NotesSchema = mongoose.Schema({
-    fileName:{
+const NoteSchema = mongoose.Schema({
+    fileName: {
         type: String,
-        required:true,
+        required: true,
     },
-    fileDescription:{
+    fileDescription: {
         type: String,
-        required:true,
+        required: true,
     },
-    tags:{
+    tags: {
         type: String,
-        required:true,
+        required: true,
     },
-    files:{
+    files: {
         type: String,
-        required:true,
+        required: true,
     },
-    uploadedBy:{
+    uploadedBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required:true,
+        required: true,
     },
-   });
 
-module.exports = mongoose.model("Notes", NotesSchema)
+});
+
+module.exports = mongoose.model("Notes", NoteSchema);

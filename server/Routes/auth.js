@@ -1,4 +1,4 @@
-const express = require("express"); // Corrected 'Require' to 'require'
+const express = require("express"); 
 const router = express.Router();
 const authController = require("../Controllers/AuthController");
 const multer = require("multer");
@@ -15,7 +15,7 @@ cloudinary.config({
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb){
-        const destinationPath = "./images"; // Make sure this path exists
+        const destinationPath = "./images"; 
         cb(null, destinationPath);
     },
     filename: function(req, file, cb){

@@ -4,20 +4,23 @@ const NotesController = require("../Controllers/NotesController");
 const multer = require("multer");
 
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "./files");
+    destination: function (req, file, cb) {
+        const destinationPath = "./files";
+        cb(null, destinationPath);
     },
-    filename: (req, file, cb) => {
+    filename: function (req, file, cb) {
         const uniqueSuffix = Date.now();
         cb(null, uniqueSuffix + file.originalname);
     },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({
+    storage: storage
+});
 
 // Routes
 router.post("/upload", upload.single("file"), NotesController.uploadNote);
 router.get("/getFiles", NotesController.getNote);
-router.get("/getfiles/:id", NotesController.getNoteByID); // Ensure this matches the exported name
+router.get("/getFiles/:id", NotesController.getNoteByID);
 
 module.exports = router;
